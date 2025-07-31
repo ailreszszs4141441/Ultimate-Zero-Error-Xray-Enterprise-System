@@ -13,9 +13,9 @@ import { Switch } from "@/components/ui/switch";
 import { Server, Loader2 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 
-export function InfrastructureFeaturesFeature() {
+export function InfrastructureFeatures() {
   const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<any | null>(null);
+  const [result, setResult] = useState<InfrastructureFeatures | null>(null);
 
   const form = useForm<InfrastructureFeatures>({
     resolver: zodResolver(InfrastructureFeaturesSchema),

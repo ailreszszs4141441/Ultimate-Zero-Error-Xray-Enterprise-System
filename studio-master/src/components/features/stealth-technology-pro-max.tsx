@@ -13,9 +13,9 @@ import { Switch } from "@/components/ui/switch";
 import { EyeOff, Loader2 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 
-export function StealthTechnologyProMaxFeature() {
+export function StealthTechnologyProMax() {
   const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<any | null>(null);
+  const [result, setResult] = useState<StealthTechnologyProMax | null>(null);
 
   const form = useForm<StealthTechnologyProMax>({
     resolver: zodResolver(StealthTechnologyProMaxSchema),

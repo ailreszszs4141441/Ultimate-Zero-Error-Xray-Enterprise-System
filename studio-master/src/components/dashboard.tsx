@@ -8,11 +8,11 @@ import { SmartRouting } from "@/components/features/smart-routing";
 import { TrafficObfuscation } from "@/components/features/traffic-obfuscation";
 import { StealthMode } from "@/components/features/stealth-mode";
 import { QuantumRelay } from "@/components/features/quantum-relay";
-import { AINeuralEngineFeature } from "@/components/features/ai-neural-engine";
-import { HyperPerformanceModuleFeature } from "@/components/features/hyper-performance-module";
-import { QuantumSafeSupremeFeature } from "@/components/features/quantum-safe-supreme";
-import { StealthTechnologyProMaxFeature } from "@/components/features/stealth-technology-pro-max";
-import { InfrastructureFeaturesFeature } from "@/components/features/infrastructure-features";
+import { AINeuralEngine } from "@/components/features/ai-neural-engine";
+import { HyperPerformanceModule } from "@/components/features/hyper-performance-module";
+import { QuantumSafeSupreme } from "@/components/features/quantum-safe-supreme";
+import { StealthTechnologyProMax } from "@/components/features/stealth-technology-pro-max";
+import { InfrastructureFeatures } from "@/components/features/infrastructure-features";
 import { BarChart, Cpu, Server, ShieldCheck, Zap } from "lucide-react";
 
 export function Dashboard() {
@@ -47,7 +47,6 @@ export function Dashboard() {
               <CardContent>
                 <div className="text-2xl font-bold text-accent">Connected</div>
                 <p className="text-xs text-muted-foreground">Low Latency: 12ms</p>
-              </C
               </CardContent>
             </Card>
              <Card className="hover:border-primary/80 transition-colors">
@@ -76,10 +75,10 @@ export function Dashboard() {
       <TabsContent value="generator" className="mt-4">
         <ConfigGenerator />
         <div className="mt-6">
-            <HyperPerformanceModuleFeature />
+            <HyperPerformanceModule />
         </div>
         <div className="mt-6">
-            <InfrastructureFeaturesFeature />
+            <InfrastructureFeatures />
         </div>
       </TabsContent>
       <TabsContent value="ai-tools" className="mt-4">
@@ -90,13 +89,13 @@ export function Dashboard() {
             <QuantumRelay />
         </div>
         <div className="mt-6">
-            <AINeuralEngineFeature />
+            <AINeuralEngine />
         </div>
         <div className="mt-6">
-            <QuantumSafeSupremeFeature />
+            <QuantumSafeSupreme />
         </div>
         <div className="mt-6">
-            <StealthTechnologyProMaxFeature />
+            <StealthTechnologyProMax />
         </div>
       </TabsContent>
     </Tabs>

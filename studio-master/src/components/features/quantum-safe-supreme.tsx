@@ -13,9 +13,9 @@ import { Switch } from "@/components/ui/switch";
 import { ShieldCheck, Loader2 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 
-export function QuantumSafeSupremeFeature() {
+export function QuantumSafeSupreme() {
   const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<any | null>(null);
+  const [result, setResult] = useState<QuantumSafeSupreme | null>(null);
 
   const form = useForm<QuantumSafeSupreme>({
     resolver: zodResolver(QuantumSafeSupremeSchema),

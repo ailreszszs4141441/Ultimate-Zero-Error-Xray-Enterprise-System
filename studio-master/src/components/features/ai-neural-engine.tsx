@@ -13,9 +13,9 @@ import { Switch } from "@/components/ui/switch";
 import { Cpu, Loader2 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 
-export function AINeuralEngineFeature() {
+export function AINeuralEngine() {
   const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<any | null>(null);
+  const [result, setResult] = useState<AINeuralEngine | null>(null);
 
   const form = useForm<AINeuralEngine>({
     resolver: zodResolver(AINeuralEngineSchema),

@@ -13,9 +13,9 @@ import { Switch } from "@/components/ui/switch";
 import { Zap, Loader2 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 
-export function HyperPerformanceModuleFeature() {
+export function HyperPerformanceModule() {
   const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<any | null>(null);
+  const [result, setResult] = useState<HyperPerformanceModule | null>(null);
 
   const form = useForm<HyperPerformanceModule>({
     resolver: zodResolver(HyperPerformanceModuleSchema),
