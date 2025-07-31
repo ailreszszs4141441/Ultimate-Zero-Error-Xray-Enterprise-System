@@ -1,21 +1,21 @@
 
 "use client";
 
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { InfrastructureFeaturesSchema, generateInfrastructureFeaturesConfig } from "@/ai/flows/infrastructure-features";
+import { InfrastructureFeaturesSchema } from "@/ai/flows/infrastructure-features";
 import type { InfrastructureFeatures } from "@/ai/flows/infrastructure-features";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { Switch } from "@/components/ui/switch";
-import { Server, Loader2 } from "lucide-react";
+import { Server } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
+import { useAppStore } from "@/lib/store";
+import { useEffect } from "react";
 
 export function InfrastructureFeatures() {
-  const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<InfrastructureFeatures | null>(null);
+  const { updateInfrastructureFeaturesConfig } = useAppStore();
 
   const form = useForm<InfrastructureFeatures>({
     resolver: zodResolver(InfrastructureFeaturesSchema),
@@ -31,18 +31,18 @@ export function InfrastructureFeatures() {
     },
   });
 
-  async function onSubmit(values: InfrastructureFeatures) {
-    setLoading(true);
-    setResult(null);
-    const config = generateInfrastructureFeaturesConfig(values);
-    setResult(config);
-    setLoading(false);
-
+  const onSubmit = (values: InfrastructureFeatures) => {
+    updateInfrastructureFeaturesConfig(values);
     toast({
         title: "Infrastructure Features Configured",
-        description: "Your new infrastructure configuration has been generated.",
-    })
-  }
+        description: "Your new infrastructure configuration has been integrated.",
+    });
+  };
+
+  useEffect(() => {
+    // Initial update on component mount
+    updateInfrastructureFeaturesConfig(form.getValues());
+    }, []);
 
   return (
     <Card>
@@ -55,7 +55,7 @@ export function InfrastructureFeatures() {
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <form onChange={() => onSubmit(form.getValues())} className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-4">
                 <h4 className="font-semibold text-accent">Network Architecture</h4>
                 <FormField control={form.control} name="Mesh_Network_Topology" render={({ field }) => (
@@ -126,19 +126,8 @@ export function InfrastructureFeatures() {
                     </FormItem>
                 )} />
             </div>
-            <div className="md:col-span-2">
-                <Button type="submit" disabled={loading} className="w-full">
-                {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                Generate Infrastructure Config
-                </Button>
-            </div>
           </form>
         </Form>
-        {result && (
-          <div className="mt-6 p-4 border rounded-md bg-card-foreground/5 font-mono text-xs">
-            <pre>{JSON.stringify(result, null, 2)}</pre>
-          </div>
-        )}
       </CardContent>
     </Card>
   );

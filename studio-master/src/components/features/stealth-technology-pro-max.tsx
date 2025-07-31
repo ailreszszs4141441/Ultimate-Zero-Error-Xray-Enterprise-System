@@ -1,21 +1,21 @@
 
 "use client";
 
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { StealthTechnologyProMaxSchema, generateStealthTechnologyProMaxConfig } from "@/ai/flows/stealth-technology-pro-max";
+import { StealthTechnologyProMaxSchema } from "@/ai/flows/stealth-technology-pro-max";
 import type { StealthTechnologyProMax } from "@/ai/flows/stealth-technology-pro-max";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { Switch } from "@/components/ui/switch";
-import { EyeOff, Loader2 } from "lucide-react";
+import { EyeOff } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
+import { useAppStore } from "@/lib/store";
+import { useEffect } from "react";
 
 export function StealthTechnologyProMax() {
-  const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<StealthTechnologyProMax | null>(null);
+  const { updateStealthTechnologyProMaxConfig } = useAppStore();
 
   const form = useForm<StealthTechnologyProMax>({
     resolver: zodResolver(StealthTechnologyProMaxSchema),
@@ -31,18 +31,18 @@ export function StealthTechnologyProMax() {
     },
   });
 
-  async function onSubmit(values: StealthTechnologyProMax) {
-    setLoading(true);
-    setResult(null);
-    const config = generateStealthTechnologyProMaxConfig(values);
-    setResult(config);
-    setLoading(false);
-
+  const onSubmit = (values: StealthTechnologyProMax) => {
+    updateStealthTechnologyProMaxConfig(values);
     toast({
         title: "Stealth Technology Pro Max Configured",
-        description: "Your new ultra-stealth configuration has been generated.",
-    })
-  }
+        description: "Your new ultra-stealth configuration has been integrated.",
+    });
+  };
+
+  useEffect(() => {
+    // Initial update on component mount
+    updateStealthTechnologyProMaxConfig(form.getValues());
+    }, []);
 
   return (
     <Card>
@@ -55,7 +55,7 @@ export function StealthTechnologyProMax() {
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <form onChange={() => onSubmit(form.getValues())} className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-4">
                 <h4 className="font-semibold text-accent">Ultimate Obfuscation</h4>
                 <FormField control={form.control} name="AI_Mimicry" render={({ field }) => (
@@ -126,19 +126,8 @@ export function StealthTechnologyProMax() {
                     </FormItem>
                 )} />
             </div>
-            <div className="md:col-span-2">
-                <Button type="submit" disabled={loading} className="w-full">
-                {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                Generate Stealth Pro Max Config
-                </Button>
-            </div>
           </form>
         </Form>
-        {result && (
-          <div className="mt-6 p-4 border rounded-md bg-card-foreground/5 font-mono text-xs">
-            <pre>{JSON.stringify(result, null, 2)}</pre>
-          </div>
-        )}
       </CardContent>
     </Card>
   );

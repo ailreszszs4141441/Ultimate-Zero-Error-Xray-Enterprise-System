@@ -1,10 +1,9 @@
 
 "use client";
 
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AINeuralEngineSchema, generateAINeuralEngineConfig } from "@/ai/flows/ai-neural-engine";
+import { AINeuralEngineSchema } from "@/ai/flows/ai-neural-engine";
 import type { AINeuralEngine } from "@/ai/flows/ai-neural-engine";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -12,10 +11,11 @@ import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/
 import { Switch } from "@/components/ui/switch";
 import { Cpu, Loader2 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
+import { useAppStore } from "@/lib/store";
+import { useEffect } from "react";
 
 export function AINeuralEngine() {
-  const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<AINeuralEngine | null>(null);
+  const { updateAINeuralEngineConfig } = useAppStore();
 
   const form = useForm<AINeuralEngine>({
     resolver: zodResolver(AINeuralEngineSchema),
@@ -31,18 +31,18 @@ export function AINeuralEngine() {
     },
   });
 
-  async function onSubmit(values: AINeuralEngine) {
-    setLoading(true);
-    setResult(null);
-    const config = generateAINeuralEngineConfig(values);
-    setResult(config);
-    setLoading(false);
-
+  const onSubmit = (values: AINeuralEngine) => {
+    updateAINeuralEngineConfig(values);
     toast({
         title: "AI Neural Engine Configured",
-        description: "Your new AI-powered configuration has been generated.",
-    })
-  }
+        description: "Your new AI-powered configuration has been integrated.",
+    });
+  };
+
+  useEffect(() => {
+    // Initial update on component mount
+    updateAINeuralEngineConfig(form.getValues());
+  }, []);
 
   return (
     <Card>
@@ -55,8 +55,8 @@ export function AINeuralEngine() {
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-4">
+          <form onChange={() => onSubmit(form.getValues())} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="space-y-4">
                 <h4 className="font-semibold text-accent">Advanced ML Models</h4>
                 <FormField control={form.control} name="Transformer_based_Traffic_Prediction" render={({ field }) => (
                     <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
@@ -126,19 +126,8 @@ export function AINeuralEngine() {
                     </FormItem>
                 )} />
             </div>
-            <div className="md:col-span-2">
-                <Button type="submit" disabled={loading} className="w-full">
-                {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                Generate AI Config
-                </Button>
-            </div>
           </form>
         </Form>
-        {result && (
-          <div className="mt-6 p-4 border rounded-md bg-card-foreground/5 font-mono text-xs">
-            <pre>{JSON.stringify(result, null, 2)}</pre>
-          </div>
-        )}
       </CardContent>
     </Card>
   );
